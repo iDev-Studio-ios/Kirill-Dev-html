@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrollInstallerX</title>
+    <style>
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/eot/FiraCode-Regular.eot');
+            src: local('SF Pro Display'), local('San Francisco'), 
+                 url('https://cdn.jsdelivr.net/gh/tonsky/FiraCode@5.2/distr/woff2/FiraCode-Regular.woff2') format('woff2');
+        }
+
+        body {
+            background-color: #007BFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            color: white;
+        }
+
+        .container, .install-screen {
+            text-align: center;
+            width: 300px;
+        }
+
+        .title {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            margin-bottom: 30px;
+            text-align: center; /* Центрирование текста */
+        }
+
+        .menu {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .menu div {
+            font-size: 18px;
+            margin: 20px 0;
+            cursor: pointer;
+            position: relative; /* Для позиционирования линии */
+        }
+
+        .menu div:not(:last-child)::after {
+            content: ''; /* Создание псевдоэлемента */
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: white; /* Белый цвет линии */
+            position: absolute;
+            bottom: -10px; /* Отступ ниже от элемента */
+            left: 0;
+        }
+
+        .install-button {
+            background-color: rgba(255, 255, 255, 0.1); /* Цвет фона кнопки */
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: 'Arial', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .install-button:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Цвет фона кнопки при наведении */
+        }
+
+        .install-screen {
+            display: none;
+            width: 350px;
+            text-align: left;
+        }
+
+        .install-screen .status-container {
+            background-color: rgba(255, 255, 255, 0.1); /* Используем тот же цвет фона */
+            color: white; /* Белый цвет текста */
+            padding: 20px;
+            border-radius: 20px; /* Более закругленные углы */
+            max-height: 450px; /* Увеличенный размер */
+            overflow-y: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .install-screen .header {
+            font-size: 28px; /* Увеличение размера шрифта */
+            font-weight: bold; /* Жирное начертание */
+            text-align: center;
+            margin-bottom: 20px;
+            color: white; /* Белый цвет текста */
+        }
+
+        .install-screen .status-item {
+            margin-bottom: 10px;
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .install-screen .status-item.success {
+            color: limegreen; /* Зеленый цвет для успешных статусов */
+        }
+
+        /* Новые стили для окна настроек */
+        .settings-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            background-color: white;
+            color: black;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .settings-popup .uninstall-button {
+            background-color: red; /* Красный цвет фона */
+            color: white; /* Белый цвет текста */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .settings-popup .uninstall-button:hover {
+            background-color: darkred; /* Темно-красный цвет при наведении */
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="main-container">
+        <div class="title">TrollWareX InstallerX</div>
+        <div class="subtitle">By TrollWareX and TrollWare Dev<br>iOS 14.0 - 16.6.1</div>
+        <div class="menu">
+            <div onclick="showSettings()">Settings</div>
+            <div>Coders</div>
+        </div>
+        <div class="install-button" onclick="showInstallScreen()">Install TrollWareX</div>
+    </div>
+
+    <div class="install-screen" id="install-screen">
+        <div class="status-container">
+            <div class="header">TrollWareX InstallerX</div>
+            <div class="status-item" id="step1">
+                🟢 Running on an iPhone, on iOS 
+            </div>
+            <div class="status-item" id="step2">
+                🟢️ Downloading kernel
+            </div>
+            <div class="status-item" id="step3">
+                🟢 Gathering kernel information
+            </div>
+            <div class="status-item" id="step4">
+                ️🟢️ Exploiting kernel (Ianda)
+            </div>
+            <div class="status-item success" id="step5">
+                ☑️🟢 Successfully exploited the kernel
+            </div>
+            <div class="status-item" id="step6">
+                🟢 Deinitialising kernel exploit (Ianda)
+            </div>
+            <div class="status-item" id="step7">
+                🟢️ Unsandboxing
+            </div>
+            <div class="status-item" id="step8">
+                ⚒️🟢 Escalating privileges
+            </div>
+            <div class="status-item" id="step9">
+                ⚒️🟢️ Extracting TrollWareX.tar
+            </div>
+            <div class="status-item" id="step10">
+                🟢 Installing TrollWareX
+            </div>
+        </div>
+    </div>
+
+    <div class="settings-popup" id="settings-popup">
+        <div>Un Install TrollWareX</div>
+        <button class="uninstall-button">Uninstall TrollWareX</button>
+    </div>
+
+    <script>
+        function showInstallScreen() {
+            document.getElementById('main-container').style.display = 'none';
+            document.getElementById('install-screen').style.display = 'block';
+
+            const steps = [
+                'step1', 'step2', 'step3', 'step4', 
+                'step5', 'step6', 'step7', 'step8', 
+                'step9', 'step10'
+            ];
+
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    document.getElementById(step).style.opacity = '1';
+                }, 1000 * (index + 1));
+            });
+        }
+
+        function showSettings() {
+            document.getElementById('settings-popup').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
